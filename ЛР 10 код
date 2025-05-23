@@ -1,0 +1,158 @@
+#include <iostream>
+#include <cmath>
+#include <limits>
+using namespace std;
+
+// Структура для зберігання часу
+struct TTime {
+    int hours;   // Години
+    int minutes; // Хвилини
+};
+
+// Функція для додавання годин до часу (Proc81)
+TTime AddHour(TTime time, int N) {
+    if (time.hours < 0 || time.hours >= 24 || time.minutes < 0 || time.minutes >= 60) {
+        return time; // Некоректний час повертаємо без змін
+    }
+    time.hours = (time.hours + N) % 24; // Додаємо та беремо по модулю 24
+    return time;
+}
+
+// Структура для завдання 2 (Begin16)
+struct Point {
+    double x1;
+    double x2;
+};
+
+// Обчислити відстань між точками
+double CalculateDistance(const Point& p) {
+    return fabs(p.x2 - p.x1);
+}
+
+// Структура для завдання 3 (Boolean24)
+struct QuadraticEquation {
+    double A;
+    double B;
+    double C;
+    double D;
+    bool hasRealRoots;
+};
+
+// Перевірка дискримінанту та наявність дійсних коренів
+void CheckEquation(QuadraticEquation& eq) {
+    eq.D = eq.B * eq.B - 4 * eq.A * eq.C;
+    eq.hasRealRoots = (eq.D >= 0);
+}
+
+// Функція для вводу з перевіркою цілого числа у діапазоні
+int inputIntInRange(const string& prompt, int min, int max) {
+    int value;
+    while (true) {
+        cout << prompt;
+        if (cin >> value && value >= min && value <= max) {
+            return value;
+        }
+        else {
+            cout << "Invalid input. Please enter an integer from " << min << " to " << max << "." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+}
+
+// Функція для вводу будь-якого дійсного числа
+double inputDouble(const string& prompt, bool nonZero = false) {
+    double value;
+    while (true) {
+        cout << prompt;
+        if (cin >> value && (!nonZero || value != 0)) {
+            return value;
+        }
+        else {
+            if (nonZero) {
+                cout << "Invalid input. Please enter a non-zero number." << endl;
+            }
+            else {
+                cout << "Invalid input. Please enter a number." << endl;
+            }
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+}
+
+// Завдання 1 (Proc81)
+void taskProc81() {
+    cout << "Task 1 (Proc81): Enter 5 times (hours and minutes)" << endl;
+    TTime times[5];
+    for (int i = 0; i < 5; ++i) {
+        times[i].hours = inputIntInRange("Enter hours (0-23): ", 0, 23);
+        times[i].minutes = inputIntInRange("Enter minutes (0-59): ", 0, 59);
+    }
+    int hoursToAdd = inputIntInRange("Enter number of hours to add (can be negative): ", -1000, 1000);
+    cout << "\nResults after adding hours:\n";
+    for (int i = 0; i < 5; ++i) {
+        TTime newTime = AddHour(times[i], hoursToAdd);
+        cout << "Original time " << (times[i].hours < 10 ? "0" : "") << times[i].hours << ":"
+            << (times[i].minutes < 10 ? "0" : "") << times[i].minutes
+            << " -> New time: " << (newTime.hours < 10 ? "0" : "") << newTime.hours << ":"
+            << (newTime.minutes < 10 ? "0" : "") << newTime.minutes << endl;
+    }
+    cout << endl;
+}
+
+// Завдання 2 (Begin16)
+void taskBegin16() {
+    cout << "Task 2 (Begin16): Calculate distance between two points on numbers line" << endl;
+    Point p;
+    p.x1 = inputDouble("Enter x1: ");
+    p.x2 = inputDouble("Enter x2: ");
+    double distance = CalculateDistance(p);
+    cout << "Distance between points: " << distance << endl << endl;
+}
+
+// Завдання 3 (Boolean24)
+void taskBoolean24() {
+    cout << "Task 3 (Boolean24): Quadratic equation roots check" << endl;
+    QuadraticEquation eq;
+    eq.A = inputDouble("Enter A (non-zero): ", true);
+    eq.B = inputDouble("Enter B: ");
+    eq.C = inputDouble("Enter C: ");
+    CheckEquation(eq);
+    if (eq.hasRealRoots) {
+        cout << "The quadratic equation has real roots." << endl << endl;
+    }
+    else {
+        cout << "The quadratic equation does not have real roots." << endl << endl;
+    }
+}
+
+int main() {
+    while (true) {
+        cout << "=== Lab 10 Menu ===" << endl;
+        cout << "1. Task 1 (Proc81) - Add hours to time" << endl;
+        cout << "2. Task 2 (Begin16) - Distance between points" << endl;
+        cout << "3. Task 3 (Boolean24) - Quadratic roots check" << endl;
+        cout << "0. Exit" << endl;
+        int choice = inputIntInRange("Choose task number: ", 0, 3);
+        cout << endl;
+        if (choice == 0) {
+            cout << "Exiting program." << endl;
+            break;
+        }
+        switch (choice) {
+        case 1:
+            taskProc81();
+            break;
+        case 2:
+            taskBegin16();
+            break;
+        case 3:
+            taskBoolean24();
+            break;
+        default:
+            cout << "Invalid choice." << endl;
+        }
+    }
+    return 0;
+}
