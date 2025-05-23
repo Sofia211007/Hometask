@@ -1,0 +1,14 @@
+#ifndef TASKS_H
+#define TASKS_H
+
+#include <string>
+
+void task1();
+void task2();
+void my_string_method(char input[], int& len);
+void insert_blanks(std::string& str);
+bool is_valid(std::string str);
+std::string find_shortest_word(const std::string& sentence);
+bool is_valid_sentence(const std::string& sentence);
+
+#endif // TASKS_H
