@@ -1,0 +1,32 @@
+#include <iostream>
+#include "tasks.h"
+
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, ""); // Для підтримки української розкладки
+    int num;
+
+    do {
+        cout << "---------------------------------" << endl;
+        cout << "Tusk number (1, 2) or 0 - exit: ";
+        cin >> num;
+        cin.ignore(32767, '\n'); // Очищення буфера після вводу числа
+
+        switch (num) {
+        case 0:
+            cout << "Exit" << endl;
+            break;
+        case 1:
+            task1();
+            break;
+        case 2:
+            task2();
+            break;
+        default:
+            cout << "Wrong task!" << endl;
+        }
+    } while (num != 0);
+
+    return 0;
+}
